@@ -50,10 +50,11 @@ public class Model{
         catch (Exception e){
             System.out.println(e);
         }
-        return "Something went wrong";
+        return "0";
     }
     private String withRoman(String[] x) throws HandledException {
         HashMap<String, String> map=new HashMap<String, String>();
+        map.put("", "0");
         map.put("I", "1");
         map.put("II", "2");
         map.put("III", "3");
@@ -64,21 +65,18 @@ public class Model{
         map.put("VIII", "8");
         map.put("IX", "9");
         map.put("X", "10");
-        map.put("XI", "11");
-        map.put("XII", "12");
-        map.put("XIII", "13");
-        map.put("XIV", "14");
-        map.put("XV", "15");
-        map.put("XVI", "16");
-        map.put("XVII", "17");
-        map.put("XVIII", "18");
-        map.put("XIX", "19");
-        map.put("XX", "20");
+        map.put("C", "100");
 
+        //I обозначает 1, V обозначает 5, X — 10, L — 50, C — 100
         if(map.containsKey(x[0]) && map.containsKey(x[2])){
             x[0] = map.get(x[0]);
             x[2] = map.get(x[2]);
-            return getKey(map, withArabic(x));
+            String temp = withArabic(x);
+            if (temp.length() == 2){
+                String secondChar = getKey(map, String.valueOf(temp.charAt(1)));
+                String firstChar = getKey(map, String.valueOf(temp.charAt(0))).replace("X","C").replace("V", "L").replace("I", "X");
+                return firstChar + secondChar;
+            }else return getKey(map, temp);
         }
         else throw new HandledException("withRoman", "must be proper roman characters");
 
